@@ -29,13 +29,11 @@ function ThemeController() {
     setTheme((prevTheme) => (prevTheme === "dark" ? "light" : "dark"));
   };
 
-  console.log("InitialTheme: ", getInitialTheme());
-  console.log("Theme: ", theme);
-
   return (
     <label className="swap swap-rotate">
       {/* this hidden checkbox controls the state */}
       <input
+        name="theme"
         type="checkbox"
         className="theme-controller"
         checked={theme === "light"}

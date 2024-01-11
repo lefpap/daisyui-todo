@@ -30,6 +30,7 @@ function AddTodo({ onAddTodo }: Props) {
         onChange={handleNameChange}
         className="input input-bordered w-full"
         placeholder="What do you need to do?"
+        autoComplete="on"
       />
       <button type="submit" className="btn btn-primary">
         Add Todo

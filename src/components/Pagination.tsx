@@ -12,23 +12,19 @@ function Pagination({ currentPage, totalPages, onPageChange }: Props) {
   return (
     <div className="join">
       <button
-        className="join-item btn"
+        className="join-item btn btn-ghost"
         onClick={() => handlePageChange(currentPage - 1)}
       >
-        {" "}
-        «{" "}
+        «
       </button>
-      <button className="join-item btn">{currentPage}</button>
-      <button className="join-item btn" disabled>
-        /
-      </button>
-      <button className="join-item btn">{totalPages}</button>
+      <button className="join-item btn btn-ghost">{currentPage}</button>
+      <button className="join-item btn btn-ghost">/</button>
+      <button className="join-item btn btn-ghost">{totalPages}</button>
       <button
-        className="join-item btn"
+        className="join-item btn btn-ghost"
         onClick={() => handlePageChange(currentPage + 1)}
       >
-        {" "}
-        »{" "}
+        »
       </button>
     </div>
   );
