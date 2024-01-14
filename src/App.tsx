@@ -1,13 +1,38 @@
+import { useEffect, useState } from "react";
 import AddTodo from "./components/AddTodo";
 import Header from "./components/Header";
 import Pagination from "./components/Pagination";
-import TodoCriteria from "./components/TodoCriteria";
+import TodoCriteriaSelector from "./components/TodoCriteriaSelector";
 import TodoList from "./components/TodoList";
-import { useTodoActions, useTodos } from "./hooks/useTodos";
+import { useTodos } from "./hooks/useTodos";
+import { TodoCriteria, TodoFilter } from "./lib/types";
+import useDelayedState from "./hooks/useDelayedState";
+
+const PAGE_SIZE = 8;
 
 function App() {
-  const { getTodos, setFilter, setSearchTerm } = useTodos();
-  const { addTodo } = useTodoActions();
+  const { getTodos } = useTodos();
+
+  const [searchTerm, setSearchTerm] = useDelayedState("", 500);
+  const [filter, setFilter] = useState<TodoFilter>("all");
+  const criteria: TodoCriteria = { searchTerm, filter };
+
+  const [page, setPage] = useState(1);
+
+  useEffect(() => {}, [searchTerm, filter, page]);
+
+  const { todos, total } = getTodos(criteria, { page, size: PAGE_SIZE });
+
+  const handleSetSearchTerm = (term: string) => {
+    setSearchTerm(term.trim());
+    setPage(1);
+  };
+
+  const handleSetFilter = (filter: TodoFilter) => {
+    setFilter(filter);
+    setPage(1);
+  };
+
   return (
     <div className="h-screen grid grid-rows-[auto_1fr]">
       {/* Header */}
@@ -15,16 +40,16 @@ function App() {
 
       {/* Main */}
       <main className="container grid grid-rows-[auto_1fr] my-3">
-        <AddTodo onAddTodo={addTodo} />
+        <AddTodo />
         <div className="card bg-base-300 shadow-xl">
           <div className="card-body">
             <div className="flex flex-col items-start justify-between gap-5 lg:flex-row lg:items-center">
               {/* Title */}
               <h2 className="card-title">Todos</h2>
-              {/* Search / Filters */}
-              <TodoCriteria
-                setFilter={setFilter}
-                setSearchTerm={setSearchTerm}
+              {/* Todo Criteria */}
+              <TodoCriteriaSelector
+                setFilter={handleSetFilter}
+                setSearchTerm={handleSetSearchTerm}
               />
             </div>
 
@@ -32,15 +57,16 @@ function App() {
 
             {/* Todo List */}
             <div className="flex-grow">
-              <TodoList todos={getTodos()} />
+              <TodoList todos={todos} />
             </div>
 
             {/* Pagination */}
             <div className="card-actions justify-center">
               <Pagination
-                currentPage={1}
-                totalPages={5}
-                onPageChange={() => {}}
+                currentPage={page}
+                pageSize={PAGE_SIZE}
+                totalItems={total}
+                onPageChange={setPage}
               />
             </div>
           </div>

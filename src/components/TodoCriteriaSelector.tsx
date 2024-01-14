@@ -11,7 +11,7 @@ type Props = {
   setFilter: (filter: TodoFilter) => void;
 };
 
-function TodoCriteria({ setSearchTerm, setFilter }: Props) {
+function TodoCriteriaSelector({ setSearchTerm, setFilter }: Props) {
   return (
     <div className="join w-full max-w-xl">
       <input
@@ -37,4 +37,4 @@ function TodoCriteria({ setSearchTerm, setFilter }: Props) {
   );
 }
 
-export default TodoCriteria;
+export default TodoCriteriaSelector;

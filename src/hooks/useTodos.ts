@@ -1,6 +1,6 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { TodoContext } from "../context/TodoContext";
-import { TodoFilter } from "../lib/types";
+import { Pagination, TodoCriteria } from "../lib/types";
 
 function useTodoContext() {
   const context = useContext(TodoContext);
@@ -13,20 +13,20 @@ function useTodoContext() {
 
 export function useTodos() {
   const { todos } = useTodoContext();
-  const todosCount = todos.length;
-  const [searchTerm, setSearchTerm] = useState<string | null>(null);
-  const [filter, setFilter] = useState<TodoFilter>("all");
 
-  const getTodos = () => {
+  const getTodos = (criteria?: TodoCriteria, pagination?: Pagination) => {
     let todosToReturn = todos;
 
-    if (searchTerm) {
+    // Filter todos by search term
+    if (criteria?.searchTerm) {
+      const searchTerm = criteria.searchTerm.trim();
       todosToReturn = todosToReturn.filter((todo) =>
         todo.title.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
 
-    switch (filter) {
+    // Filter todos by filter type
+    switch (criteria?.filter) {
       case "active":
         todosToReturn = todosToReturn.filter((todo) => !todo.completed);
         break;
@@ -37,10 +37,20 @@ export function useTodos() {
         break;
     }
 
-    return todosToReturn;
+    // Find total number of todos after filtering
+    const total = todosToReturn.length;
+
+    // Paginate todos
+    if (pagination) {
+      const { page, size } = pagination;
+      const startIndex = (page - 1) * size;
+      todosToReturn = todosToReturn.slice(startIndex, startIndex + size);
+    }
+
+    return { todos: todosToReturn, total };
   };
 
-  return { getTodos, todosCount, setSearchTerm, setFilter };
+  return { getTodos };
 }
 
 export function useTodoActions() {

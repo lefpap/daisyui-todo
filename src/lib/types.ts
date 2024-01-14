@@ -5,3 +5,18 @@ export type Todo = {
 };
 
 export type TodoFilter = "all" | "active" | "completed";
+
+export type Pagination = {
+  page: number;
+  size: number;
+};
+
+export type TodoCriteria =
+  | {
+      searchTerm: string;
+      filter?: TodoFilter;
+    }
+  | {
+      searchTerm?: string;
+      filter: TodoFilter;
+    };

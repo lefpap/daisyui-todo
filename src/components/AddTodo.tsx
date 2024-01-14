@@ -1,10 +1,8 @@
 import React, { useState } from "react";
+import { useTodoActions } from "../hooks/useTodos";
 
-type Props = {
-  onAddTodo: (title: string) => void;
-};
-
-function AddTodo({ onAddTodo }: Props) {
+function AddTodo() {
+  const { addTodo } = useTodoActions();
   const [name, setName] = useState("");
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -14,7 +12,8 @@ function AddTodo({ onAddTodo }: Props) {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     //TODO: make some validations
-    onAddTodo(name);
+    if (name.trim() === "") return;
+    addTodo(name);
     setName("");
   };
   return (

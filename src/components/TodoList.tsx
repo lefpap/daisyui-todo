@@ -6,6 +6,10 @@ type Props = {
 };
 
 function TodoList({ todos }: Props) {
+  if (todos.length === 0) {
+    return <p className="text-base-content/50">There is nothing todo now...</p>;
+  }
+
   return (
     <ul className="space-y-3">
       {todos.map((todo) => (
