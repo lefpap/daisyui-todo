@@ -41,7 +41,7 @@ function TodoItem({ id, title, completed }: Props) {
 
   return (
     <li className="flex items-center justify-between gap-5">
-      <div className="flex items-center justify-start gap-3 flex-grow">
+      <div className="flex items-center justify-start gap-3 w-full">
         <input
           type="checkbox"
           checked={completed}
@@ -64,7 +64,7 @@ function TodoItem({ id, title, completed }: Props) {
           <span
             onDoubleClick={handleEditOpen}
             className={cn(
-              "text-base-content font-semibold first-letter:uppercase",
+              "text-base-content font-semibold first-letter:uppercase line-clamp-1",
               { "text-base-content/50 line-through": completed }
             )}
           >
@@ -72,7 +72,7 @@ function TodoItem({ id, title, completed }: Props) {
           </span>
         )}
       </div>
-      <div className="space-x-2">
+      <div className="space-x-2 flex-shrink-0">
         <button
           className="btn btn-ghost btn-circle"
           onClick={editMode ? handleEditSave : handleEditOpen}
